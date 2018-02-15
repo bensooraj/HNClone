@@ -6,6 +6,9 @@ var bodyParser = require("body-parser");
 // Middlewares
 router.use(bodyParser.urlencoded({ extended: true }));
 
-router.get('', function (req, res) {
-    // 
+router.get('/', function (req, res) {
+    res.send('Posts of user: ' + req.params.username);
 });
+
+
+module.exports = router;
