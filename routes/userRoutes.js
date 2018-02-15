@@ -28,5 +28,14 @@ router.post('/', function (req, res) {
         })
 });
 
+router.get('/:username', function (req, res) {
+    db.User.find({username: req.params.username})
+        .then(function (user) {
+            console.log(user);
+            res.render('users/user', { user });
+        }, function (err) {
+            res.send("ERROR: " + err + ", listing users @ " + req.url);
+        });
+});
 
 module.exports = router;
