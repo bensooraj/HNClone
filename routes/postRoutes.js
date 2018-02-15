@@ -13,5 +13,13 @@ router.get('/', function (req, res) {
     });
 });
 
+router.get('/new', function (req, res) {
+    res.render('users/posts/newPost', {
+        username: req.params.username,
+    });
+});
+
+
+
 
 module.exports = router;

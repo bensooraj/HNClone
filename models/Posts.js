@@ -1,7 +1,14 @@
 var mongoose = require('mongoose');
 
 var postSchema = new mongoose.Schema({
-    title: String,
+    title: {
+        type: String,
+        required: [true, "post title can't be blank"],
+    },
+    text: {
+        type: String,
+        required: [true, "post text can't be blank"],
+    },
     author: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
