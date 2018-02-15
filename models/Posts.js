@@ -1,7 +1,8 @@
 var mongoose = require('mongoose');
+
 var postSchema = new mongoose.Schema({
     title: String,
-    username: {
+    author: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User'
     },
@@ -11,7 +12,7 @@ var postSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Comment'
     }]
-});
+}, { timestamps: true });
 
 var Post = mongoose.model('Post', postSchema);
 
