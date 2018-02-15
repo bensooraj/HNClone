@@ -7,7 +7,10 @@ var bodyParser = require("body-parser");
 router.use(bodyParser.urlencoded({ extended: true }));
 
 router.get('/', function (req, res) {
-    res.send('Posts of user: ' + req.params.username);
+    res.render('users/posts/posts', {
+        username: req.params.username,
+        posts: 'Dummy Posts List'
+    });
 });
 
 
