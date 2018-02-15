@@ -12,24 +12,20 @@ router.get('/', function (req, res) {
         .then(function (users) {
             res.render('users/users', { users });
         }, function (err) {
-            res.send("ERROR listing users @ " + req.url);
+            res.send("ERROR: " + err + ", listing users @ " + req.url);
         });
 });
 
 router.post('/', function (req, res) {
     console.log('POST data:');
     console.log(req.body);
-    // db.User.find({})
-    //     .then(function (users) {
-    //         res.render('users', {users});
-    //     }, function (err) {
-    //         res.send("ERROR: " + err + ", listing users @ " + req.url);
-    //     });
+
     db.User.create(req.body)
         .then(function () {
             res.redirect('/')
+        }, function (err) {
+            res.send("ERROR: " + err + ", listing users @ " + req.url);
         })
-    res.redirect('/');
 });
 
 

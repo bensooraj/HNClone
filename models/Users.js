@@ -12,12 +12,14 @@ var userSchema = new mongoose.Schema({
 
 var User = mongoose.model('User', userSchema);
 
-module.exports = User;
-
 // Async Unique Validation for `username`
 // Resource: http://timstermatic.github.io/blog/2013/08/06/async-unique-validation-with-expressjs-and-mongoose/
-User.schema.path('username').validate(function (value, validateAs) {
-    User.findOne({username: value}, function (err, user) {
-        if(user) validateAs(false);
-    })
+User.schema.path('username').validate(async function (value) {
+    var user = await User.findOne({ username: value });
+    if (user) {
+        console.log('Users exists!');
+        return false;
+    }
 }, 'This username is already taken!');
+
+module.exports = User;
