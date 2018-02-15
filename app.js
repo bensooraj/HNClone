@@ -11,8 +11,15 @@ app.use((req, res, next) => {
     next();
 });
 
-app.get('/', function (req, res) {
-    res.send('Hello');
-})
+// Get all the routes
+var userRoutes = require('./routes/userRoutes');
+
+// Assign the above routes to route paths
+app.use('/users', userRoutes);
+
+// Root path redirect
+app.get('/', (req, res) => {
+    res.redirect('/users');
+});
 
 app.listen(3000, () => console.log('Example app listening on port 3000!'))

@@ -5,18 +5,18 @@ var db = require("../models");
 router.get('/', function (req, res) {
     db.User.find({})
         .then(function (users) {
-            res.render('users', {users});
+            res.render('users/users', {users});
         }, function (err) {
             res.send("ERROR listing users @ " + req.url);
         });
 });
 
-router.get('/', function (req, res) {
+router.post('/', function (req, res) {
     db.User.find({})
         .then(function (users) {
             res.render('users', {users});
         }, function (err) {
-            res.send("ERROR listing users @ " + req.url);
+            res.send("ERROR: " + err + ", listing users @ " + req.url);
         });
 });
 

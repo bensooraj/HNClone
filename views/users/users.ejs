@@ -10,17 +10,18 @@
 
 <body>
     <h3>Users list...</h3>
-    <ul class="items">
-        <% for(var i=0; i<items.length; i++) {%>
-            <li class="items">
-                <a href="/items/<%= items[i].item %>">
-                    <%= items[i].item %>
-                </a>
+    <!-- users -->
+    <ul class="users">
+        <% for(var i=0; i<users.length; i++) {%>
+            <li class="users">
+                <!-- <a href="/users/<%= users[i].username %>"> -->
+                    <%= users[i].username %>
+                <!-- </a> -->
             </li>
         <% } %>
     </ul>
-    <form action="/items" method="post">
-        <input type="text" name="item" id="item" placeholder="add item...">
+    <form action="/users" method="post">
+        <input type="text" name="username" id="username" placeholder="add user...">
         <input type="submit" value="submit">
     </form>
 </body>
