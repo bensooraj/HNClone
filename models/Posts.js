@@ -5,7 +5,7 @@ var postSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User'
     },
-    points: Number,
+    // points: Number,
     timestamp: Date,
     comments: [{
         type: mongoose.Schema.Types.ObjectId,
