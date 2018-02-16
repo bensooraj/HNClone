@@ -23,12 +23,13 @@ app.get('/', (req, res) => {
     res.redirect('/posts');
 });
 
-// Individual posts
+// All posts
 app.get('/posts', async (req, res) => {
     var posts = await db.Post.find({})
         .populate('posts')
         .populate('comments')
         .exec();
+
     res.render('posts/posts', {
         posts: posts
     });
