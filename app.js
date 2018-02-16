@@ -3,6 +3,7 @@ const app = express();
 require('dotenv').config()
 // var bodyParser = require("body-parser");
 var db = require("./models");
+const port = Number(process.env.PORT || 3000);
 
 // Middlewares
 app.set('view engine', 'ejs');
@@ -56,6 +57,4 @@ app.get('/posts/:post_id', async (req, res) => {
     });
 });
 
-
-
-app.listen(3000, () => console.log('Example app listening on port 3000!'))
+app.listen(port, () => console.log('Example app listening on port 3000!'))
