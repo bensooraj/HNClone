@@ -15,6 +15,7 @@
         at <%= post.createdAt %>
     </p>
     <form action="/posts/<%= post._id %>/comments/new" method="post">
+        <input type="hidden" name="post_id" id="post_id" value="<%= post._id %>">
         <textarea name="postComment" id="postComment" cols="70" rows="5"></textarea>
         <br>
         <input type="submit" value="add comment" id="addComment">
