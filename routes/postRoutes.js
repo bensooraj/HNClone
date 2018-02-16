@@ -45,7 +45,7 @@ router.post('/', async function (req, res) {
     );
     console.log(author);
 
-    res.redirect('/' + req.params.username + '/posts');
+    res.redirect('/users/' + req.params.username + '/posts');
 });
 
 router.get('/new', function (req, res) {
