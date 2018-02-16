@@ -24,19 +24,26 @@ app.get('/', (req, res) => {
 });
 
 // Individual posts
-app.get('/', (req, res) => {
-    res.redirect('/posts');
+app.get('/posts', async (req, res) => {
+    var posts = await db.Post.find({})
+        .populate('posts')
+        .populate('comments')
+        .exec();
+    res.render('posts/posts', {
+        posts: posts
+    });
 });
 
 // 
 app.get('/posts/:post_id', async (req, res) => {
     var post = await db.Post.findOne({ _id: req.params.post_id })
-                            .populate('posts')
-                            .populate('comments')
-                            .exec();
+        .populate('posts')
+        .populate('comments')
+        .exec();
     var author = await db.User.findOne({ _id: post.author }).exec();
     console.log(author);
-    
+    console.log('Through population: ' + post.author);
+
     var comments = await db.Comment.find({ post: post._id }).exec();;
     console.log(comments);
 
