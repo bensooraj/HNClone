@@ -7,7 +7,11 @@ var userSchema = new mongoose.Schema({
         required: [true, "can't be blank"],
         match: [/^[a-zA-Z0-9]+$/, 'is invalid'],
         index: true
-    }
+    },
+    posts: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Post'
+    }]
 }, { timestamps: true });
 
 var User = mongoose.model('User', userSchema);

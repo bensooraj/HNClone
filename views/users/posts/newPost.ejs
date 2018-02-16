@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title><%= username %>'s new post</title>
+</head>
+
+<body>
+    <strong><%= username %></strong>'s new post:
+    <form action="/users/<%= username %>/posts/" method="post">
+        <textarea name="title" id="title" cols="70" rows="2" placeholder="Title"></textarea>
+        <br>
+        <textarea name="text" id="text" cols="70" rows="10" placeholder="Text"></textarea>
+        <br>
+        <input type="submit" value="submit">
+    </form>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+</body>
+
+</html>
