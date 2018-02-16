@@ -1,6 +1,11 @@
+require('dotenv').config()
 var mongoose = require("mongoose");
 mongoose.set('debug', true)
-mongoose.connect('mongodb://localhost:27017/hackernews')
+var connectURL = "mongodb://" + process.env.DB_USER + ":" + process.env.DB_PASS + "@ds237748.mlab.com:37748/ben-hackernews-clone";
+mongoose.connect(connectURL);
+
+// mongodb://localhost:27017/hackernews
+
 
 mongoose.Promise = Promise;
 
