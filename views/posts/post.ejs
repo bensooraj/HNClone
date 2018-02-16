@@ -14,7 +14,7 @@
         by <a href="/users/<%= author.username %>"><%= author.username %></a>
         at <%= post.createdAt %>
     </p>
-    <form action="/posts/<%= post.title %>/comments/new" method="post">
+    <form action="/posts/<%= post._id %>/comments/new" method="post">
         <textarea name="postComment" id="postComment" cols="70" rows="5"></textarea>
         <br>
         <input type="submit" value="add comment" id="addComment">
@@ -22,11 +22,12 @@
     <h4>Comments...</h4>
     <hr>
     <div id="comments">
-        <%= comments %>
+        <!-- <%= comments %> -->
         <!-- <div class="comments">
-
-        </div> -->
+        </div>
+        <hr> -->
     </div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="/scripts.js"></script>
 </body>
 </html>
