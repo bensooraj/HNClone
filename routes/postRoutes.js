@@ -13,7 +13,7 @@ router.get('/', async function (req, res) {
 
     res.render('users/posts/posts', {
         username: req.params.username,
-        posts: 'Dummy Posts List'
+        posts: author.posts
     });
 });
 
@@ -45,7 +45,7 @@ router.post('/', async function (req, res) {
     );
     console.log(author);
 
-    res.redirect('/');
+    res.redirect('/' + req.params.username + '/posts');
 });
 
 router.get('/new', function (req, res) {
