@@ -1,14 +1,15 @@
 const express = require('express');
 const app = express();
 require('dotenv').config()
-// var bodyParser = require("body-parser");
+var bodyParser = require("body-parser");
 var db = require("./models");
 const port = Number(process.env.PORT || 3000);
 
 // Middlewares
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
 app.set('view engine', 'ejs');
 app.use(express.static(__dirname + "/public"));
-// app.use(bodyParser.urlencoded({ extended: true }));
 app.use((req, res, next) => {
     console.log("Requested URL: " + req.url);
     next();
@@ -55,6 +56,14 @@ app.get('/posts/:post_id', async (req, res) => {
         author: author,
         comments: comments
     });
+});
+
+// For handling the comments
+app.post('/posts/:post_id/comments/new', function (req, res) {
+    console.log('Request to add new comment.');
+    console.log(req.body);
+    // user: commentuser
+    res.send({"message": "Comment added successfully"});
 });
 
 app.listen(port, () => console.log('Example app listening on port 3000!'))
