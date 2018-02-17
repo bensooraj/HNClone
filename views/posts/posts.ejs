@@ -15,6 +15,7 @@
                     <%= posts[i].title %>
                 </a></h4>
                 <strong>created at </strong><%= posts[i].createdAt %>
+                <strong>by </strong> <%= posts[i].author.username %>
             </li>
         <% } %>
     </ul>

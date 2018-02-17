@@ -14,6 +14,8 @@ app.use((req, res, next) => {
     console.log("Requested URL: " + req.url);
     next();
 });
+// For testing, sending a formatted response to the browser
+app.set('json spaces', 2)
 
 // Get all the routes
 var userRoutes = require('./routes/userRoutes');
@@ -29,8 +31,7 @@ app.get('/', (req, res) => {
 // All posts
 app.get('/posts', async (req, res) => {
     var posts = await db.Post.find({})
-        .populate('posts')
-        .populate('comments')
+        .populate('author')
         .exec();
 
     res.render('posts/posts', {
@@ -66,14 +67,15 @@ app.post('/posts/:post_id/comments/new', function (req, res) {
     res.send({"message": "Comment added successfully"});
 });
 
-app.get('/test', (req, res) => {
+app.get('/test', async (req, res) => {
     var posts = await db.Post.find({})
-        .populate('posts')
+        .populate('author')
         .exec();
 
-    res.render('posts/posts', {
-        posts: posts
-    });
+    // res.render('testView', {
+    //     posts: posts
+    // });
+    res.json(posts);
 });
 
 app.listen(port, () => console.log('Example app listening on port 3000!'))
