@@ -41,21 +41,33 @@ app.get('/posts', async (req, res) => {
 
 // 
 app.get('/posts/:post_id', async (req, res) => {
-    var post = await db.Post.findOne({ _id: req.params.post_id })
-        .populate('posts')
-        .populate('comments')
+    var post = await db.Post.find({ _id: req.params.post_id })
+        .populate('author')
+        .populate({
+            path: 'comments',
+            // Populate author details inside the comment
+            populate: { path: 'author' },
+            // Sort the comments, to display comments in
+            // chronological order
+            options: {
+                sort: { 'createdAt': 1 }
+            }
+        })
         .exec();
-    var author = await db.User.findOne({ _id: post.author }).exec();
-    console.log(author);
-    console.log('Through population: ' + post.author);
+    // var post = await db.Post.findOne({ _id: req.params.post_id })
+    //     .populate('posts')
+    //     .populate('comments')
+    //     .exec();
+    
+    // var author = await db.User.findOne({ _id: post.author }).exec();
+    // console.log(author);
+    // console.log('Through population: ' + post.author);
 
-    var comments = await db.Comment.find({ post: post._id }).exec();;
-    console.log(comments);
+    // var comments = await db.Comment.find({ post: post._id }).exec();;
+    // console.log(comments);
 
     res.render('posts/post', {
-        post: post,
-        author: author,
-        comments: comments
+        post: post
     });
 });
 
@@ -66,7 +78,7 @@ app.post('/posts/:post_id/comments/new', async function (req, res) {
     // user: commentuser
     // Get the user from the User model
     var author = await db.User.findOne({ username: 'commentuser' }).exec();
-    
+
     // Create a new comment and save it to DB
     var newComment = new db.Comment({
         text: req.body.comment,
@@ -81,15 +93,15 @@ app.post('/posts/:post_id/comments/new', async function (req, res) {
         { $push: { comments: newComment } },
     );
     console.log(author);
-    
+
     // Update Post
     var post = await db.Post.findOneAndUpdate(
         { _id: req.params.post_id },
         { $push: { comments: newComment } },
     );
     console.log(post);
-    
-    res.send({"message": "Comment added successfully"});
+
+    res.send({ "message": "Comment added successfully" });
 });
 
 
@@ -105,5 +117,28 @@ app.get('/test', async (req, res) => {
     // });
     res.json(posts);
 });
+
+// FOR a single POST
+app.get('/test/post', async (req, res) => {
+    var posts = await db.Post.find({ _id: '5a86318b538f25429ff65ff1' })
+        .populate('author')
+        .populate({
+            path: 'comments',
+            // Populate author details inside the comment
+            populate: { path: 'author' },
+            // Sort the comments, to display comments in
+            // chronological order
+            options: {
+                sort: { 'createdAt': 1 }
+            }
+        })
+        .exec();
+
+    // res.render('testView', {
+    //     posts: posts
+    // });
+    res.json(posts);
+});
+
 
 app.listen(port, () => console.log('Example app listening on port 3000!'))

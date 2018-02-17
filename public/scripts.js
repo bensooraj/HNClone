@@ -10,7 +10,10 @@ $(document).ready(function () {
             + comment +
             `</div>
         <hr>`);
-
+        
+        // Empty the input text area
+        $('#postComment').val('');
+        
         // Post request for adding comments
         var post_id = $('#post_id').val();
         var headers = new Headers({
@@ -29,6 +32,7 @@ $(document).ready(function () {
             .then((data) => {
                 console.log(data);
             });
+        
     });
 
 });
