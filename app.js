@@ -66,4 +66,14 @@ app.post('/posts/:post_id/comments/new', function (req, res) {
     res.send({"message": "Comment added successfully"});
 });
 
+app.get('/test', (req, res) => {
+    var posts = await db.Post.find({})
+        .populate('posts')
+        .exec();
+
+    res.render('posts/posts', {
+        posts: posts
+    });
+});
+
 app.listen(port, () => console.log('Example app listening on port 3000!'))

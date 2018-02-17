@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title><%= username %>'s posts</title>
+</head>
+<body>
+    <h3><%= username %> has written the following posts:</h3>
+    <ul class="posts">
+        <% for(var i=0; i<posts.length; i++) {%>
+            <li class="posts">
+                <h4> <a href="/posts/<%= posts[i]._id %>">
+                    <%= posts[i].title %>
+                </a></h4>
+                <p>
+                    <%= posts[i].text %>
+                </p>
+            </li>
+        <% } %>
+    </ul>
+    <!-- <ul>
+        <li><%= posts %> </li>
+    </ul> -->
+</body>
+</html>
