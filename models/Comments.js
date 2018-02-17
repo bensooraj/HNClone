@@ -10,7 +10,6 @@ var commentSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Post'
     },
-    timestamp: Date
 }, { timestamps: true });
 
 var Comment = mongoose.model('Comment', commentSchema);

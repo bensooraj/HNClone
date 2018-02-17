@@ -4,24 +4,20 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>All posts</title>
+    <title>posts</title>
 </head>
 <body>
-    <h3>All posts:</h3>
+    <h3>test list posts:</h3>
     <ul class="posts">
         <% for(var i=0; i<posts.length; i++) {%>
             <li class="posts">
                 <h4> <a href="/posts/<%= posts[i]._id %>">
                     <%= posts[i].title %>
                 </a></h4>
-                <strong>created at </strong><%= posts[i].createdAt %>
-                <strong>by </strong> 
-                <a href="/users/<%= posts[i].author.username %>"><%= posts[i].author.username %></a>
+                <p>Post content:</p>
+                <p><%= posts[i] %></p>
             </li>
         <% } %>
     </ul>
-    <!-- <ul>
-        <li><%= posts %> </li>
-    </ul> -->
 </body>
 </html>
