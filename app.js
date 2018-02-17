@@ -60,13 +60,41 @@ app.get('/posts/:post_id', async (req, res) => {
 });
 
 // For handling the comments
-app.post('/posts/:post_id/comments/new', function (req, res) {
+app.post('/posts/:post_id/comments/new', async function (req, res) {
     console.log('Request to add new comment.');
     console.log(req.body);
     // user: commentuser
+    // Get the user from the User model
+    var author = await db.User.findOne({ username: 'commentuser' }).exec();
+    
+    // Create a new comment and save it to DB
+    var newComment = new db.Comment({
+        text: req.body.comment,
+        author: author._id,
+        post: req.params.post_id
+    });
+    newComment.save();
+
+    // Update User
+    author = await db.User.findOneAndUpdate(
+        { username: 'commentuser' },
+        { $push: { comments: newComment } },
+    );
+    console.log(author);
+    
+    // Update Post
+    var post = await db.Post.findOneAndUpdate(
+        { _id: req.params.post_id },
+        { $push: { comments: newComment } },
+    );
+    console.log(post);
+    
     res.send({"message": "Comment added successfully"});
 });
 
+
+// TEST ROUTES //
+// FOR ALL POSTS
 app.get('/test', async (req, res) => {
     var posts = await db.Post.find({})
         .populate('author')

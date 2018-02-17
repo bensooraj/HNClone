@@ -15,7 +15,8 @@
                     <%= posts[i].title %>
                 </a></h4>
                 <strong>created at </strong><%= posts[i].createdAt %>
-                <strong>by </strong> <%= posts[i].author.username %>
+                <strong>by </strong> 
+                <a href="/users/<%= posts[i].author.username %>"><%= posts[i].author.username %></a>
             </li>
         <% } %>
     </ul>

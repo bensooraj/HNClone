@@ -23,10 +23,6 @@ $(document).ready(function () {
                 comment: $('#postComment').val()
             })
         };
-        // console.log(JSON.stringify({
-        //     comment: $('#postComment').val()
-        // }));
-        // console.log($('#postComment').val());
         var postURL = "/posts/" + post_id + "/comments/new";
         fetch(postURL, initObj)
             .then((response) => response.json())
