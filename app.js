@@ -29,7 +29,7 @@ mongoose.connect(connectURL);
 var dbSessions = mongoose.connection;
 dbSessions.once('open', function () {
     // Testing the DB connection
-    console.log('we\'re connected!');
+    console.log('Connected to DB, for storring sessions!');
 });
 //use sessions for tracking logins
 app.use(session({
@@ -117,19 +117,12 @@ app.post('/posts/:post_id/comments/new', async function (req, res) {
     res.send({ "message": "Comment added successfully" });
 });
 
-
-// TEST LOGIN //
-
-app.get('/test/signup', async (req, res) => {
+// Sign Up
+app.get('/signup', async (req, res) => {
     var error;
     res.render('users/signUp', { error });
 });
-
-app.get('/test/success', async (req, res) => {
-    res.send('user registered successfully');
-});
-
-app.post('/test/signup', async (req, res) => {
+app.post('/signup', async (req, res) => {
     var error;
     // confirm that user typed same password twice
     if (req.body.password !== req.body.passwordConfirmation) {
@@ -144,7 +137,7 @@ app.post('/test/signup', async (req, res) => {
         };
         db.User.create(userObject)
             .then(function () {
-                res.redirect('/test/success');
+                res.redirect('/');
             }, function (err) {
                 error = err;
                 res.render('users/signUp', { error });
@@ -154,6 +147,18 @@ app.post('/test/signup', async (req, res) => {
         res.render('users/signUp', { error });
     }
 });
+
+// TEST LOGIN //
+
+// app.get('/test/signup', async (req, res) => {
+//     // 
+//     res.send('nothing here');
+// });
+
+// app.post('/test/signup', async (req, res) => {
+//     // 
+//     res.send('nothing here');    
+// });
 
 
 app.listen(port, () => console.log('Example app listening on port 3000!'))
