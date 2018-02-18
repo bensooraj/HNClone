@@ -6,6 +6,7 @@ var db = require("./models");
 const port = Number(process.env.PORT || 3000);
 var session = require('express-session');
 var MongoStore = require('connect-mongo')(session);
+var bcrypt = require('bcrypt');
 
 // Middlewares
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -16,6 +17,7 @@ app.use((req, res, next) => {
     console.log("Requested URL: " + req.url);
     next();
 });
+
 // For testing, sending a formatted response to the browser
 app.set('json spaces', 2)
 
@@ -40,6 +42,39 @@ app.use(session({
         mongooseConnection: dbSessions
     })
 }));
+app.use(async function (req, res, next) {
+    // Check if session exists
+    if (req.session && req.session.user) {
+        // Lookup the user in the DB by pulling their username from the session
+        var user = await db.User.findOne({ username: req.session.user.username });
+        if (user) {
+            req.user = user;
+            // delete the password from the session
+            delete req.user.password;
+            //refresh the session value
+            req.session.user = user;
+            delete req.session.password;
+            // expose the user to the template
+            res.locals.user = user;
+            delete res.locals.password;
+
+            // Remove ======================
+            console.log('res.locals: ');
+            console.log(res.locals);
+
+            console.log('req.user: ');
+            console.log(req.user);
+            console.log('req.user.password: ' + req.user.password);
+
+            console.log('req.sessions: ');  //\
+            console.log(req.session);      //||
+            // Remove =========================
+        }
+        next();
+    } else {
+        next();
+    }
+});
 
 // Get all the routes
 var userRoutes = require('./routes/userRoutes');
@@ -51,6 +86,14 @@ app.use('/users', userRoutes);
 app.get('/', (req, res) => {
     res.redirect('/posts');
 });
+
+function requireLogin(req, res, next) {
+    if (!req.user) {
+        res.redirect('/login');
+    } else {
+        next();
+    }
+};
 
 // All posts
 app.get('/posts', async (req, res) => {
@@ -148,17 +191,38 @@ app.post('/signup', async (req, res) => {
     }
 });
 
+app.get('/login', function (req, res) {
+    var error;
+    res.render('users/login', { error });
+});
+
+app.post('/login', async function (req, res) {
+    var error;
+    console.log('Username: ' + req.body.username + ' | Password: ' + req.body.password);
+    var user = await db.User.findOne({ username: req.body.username });
+    if (!user) {
+        // If the user doesn't exist, display the login page again
+        error = "The username doesn't exist! Try again.";
+        res.render('users/login', { error });
+    } else {
+        if (bcrypt.compareSync(req.body.password, user.password)) {
+            // Store the user in the session:
+            req.session.user = user;
+            res.redirect('/');
+        } else {
+            // If the password doesn't match, display the login page again
+            error = "The password that you've entered is incorrect! Try again.";
+            res.render('users/login', { error });
+        }
+    }
+});
+
 // TEST LOGIN //
 
-// app.get('/test/signup', async (req, res) => {
-//     // 
-//     res.send('nothing here');
-// });
-
-// app.post('/test/signup', async (req, res) => {
-//     // 
-//     res.send('nothing here');    
-// });
+app.get('/test/view', async (req, res) => {
+    // 
+    res.render('testView');
+});
 
 
 app.listen(port, () => console.log('Example app listening on port 3000!'))
