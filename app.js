@@ -4,6 +4,8 @@ require('dotenv').config()
 var bodyParser = require("body-parser");
 var db = require("./models");
 const port = Number(process.env.PORT || 3000);
+var session = require('express-session');
+var MongoStore = require('connect-mongo')(session);
 
 // Middlewares
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -16,6 +18,28 @@ app.use((req, res, next) => {
 });
 // For testing, sending a formatted response to the browser
 app.set('json spaces', 2)
+
+// U S E R * L O G I N * R E L A T E D
+var mongoose = require('mongoose');
+// Uncomment the following when running via mLAB
+// var connectURL = "mongodb://" + process.env.DB_USER + ":" + process.env.DB_PASS + "@ds237748.mlab.com:37748/ben-hackernews-clone";
+// Uncomment the following when running via localhost
+var connectURL = "mongodb://localhost:27017/hackernews";
+mongoose.connect(connectURL);
+var dbSessions = mongoose.connection;
+dbSessions.once('open', function () {
+    // Testing the DB connection
+    console.log('we\'re connected!');
+});
+//use sessions for tracking logins
+app.use(session({
+    secret: '7}~49GCd/)iHMDWJHMIp9k+3J^J8t4B3Uu1g$EqIxo[A6:c|n*D{!Z=*!XnX',
+    resave: true,
+    saveUninitialized: false,
+    store: new MongoStore({
+        mongooseConnection: dbSessions
+    })
+}));
 
 // Get all the routes
 var userRoutes = require('./routes/userRoutes');
@@ -54,17 +78,6 @@ app.get('/posts/:post_id', async (req, res) => {
             }
         })
         .exec();
-    // var post = await db.Post.findOne({ _id: req.params.post_id })
-    //     .populate('posts')
-    //     .populate('comments')
-    //     .exec();
-    
-    // var author = await db.User.findOne({ _id: post.author }).exec();
-    // console.log(author);
-    // console.log('Through population: ' + post.author);
-
-    // var comments = await db.Comment.find({ post: post._id }).exec();;
-    // console.log(comments);
 
     res.render('posts/post', {
         post: post
@@ -105,39 +118,12 @@ app.post('/posts/:post_id/comments/new', async function (req, res) {
 });
 
 
-// TEST ROUTES //
-// FOR ALL POSTS
-app.get('/test', async (req, res) => {
-    var posts = await db.Post.find({})
-        .populate('author')
-        .exec();
-
-    // res.render('testView', {
-    //     posts: posts
-    // });
-    res.json(posts);
-});
+// TEST LOGIN //
 
 // FOR a single POST
-app.get('/test/post', async (req, res) => {
-    var posts = await db.Post.find({ _id: '5a86318b538f25429ff65ff1' })
-        .populate('author')
-        .populate({
-            path: 'comments',
-            // Populate author details inside the comment
-            populate: { path: 'author' },
-            // Sort the comments, to display comments in
-            // chronological order
-            options: {
-                sort: { 'createdAt': 1 }
-            }
-        })
-        .exec();
-
-    // res.render('testView', {
-    //     posts: posts
-    // });
-    res.json(posts);
+app.get('/test/signup', async (req, res) => {
+    
+    res.render('users/signUp');
 });
 
 
