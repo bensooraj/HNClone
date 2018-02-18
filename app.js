@@ -120,10 +120,39 @@ app.post('/posts/:post_id/comments/new', async function (req, res) {
 
 // TEST LOGIN //
 
-// FOR a single POST
 app.get('/test/signup', async (req, res) => {
-    
-    res.render('users/signUp');
+    var error;
+    res.render('users/signUp', { error });
+});
+
+app.get('/test/success', async (req, res) => {
+    res.send('user registered successfully');
+});
+
+app.post('/test/signup', async (req, res) => {
+    var error;
+    // confirm that user typed same password twice
+    if (req.body.password !== req.body.passwordConfirmation) {
+        error = "The passwords don't match. Please try again.";
+        res.render('users/signUp', { error });
+    }
+
+    if (req.body.username && req.body.password) {
+        var userObject = {
+            username: req.body.username,
+            password: req.body.password
+        };
+        db.User.create(userObject)
+            .then(function () {
+                res.redirect('/test/success');
+            }, function (err) {
+                error = err;
+                res.render('users/signUp', { error });
+            });
+    } else {
+        error = 'Please enter a username and password';
+        res.render('users/signUp', { error });
+    }
 });
 
 
