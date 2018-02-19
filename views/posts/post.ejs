@@ -15,9 +15,9 @@
         by <a href="/users/<%= post[0].author.username %>"><%= post[0].author.username %></a>
         at <%= post[0].createdAt %>
     </p>
-    <form action="/posts/<%= post[0]._id %>/comments/new" method="post">
+    <form action="/comment" method="post">
         <input type="hidden" name="post_id" id="post_id" value="<%= post[0]._id %>">
-        <textarea name="postComment" id="postComment" cols="70" rows="5"></textarea>
+        <textarea name="commentText" id="commentText" cols="70" rows="5"></textarea>
         <br>
         <input type="submit" value="add comment" id="addComment">
     </form>

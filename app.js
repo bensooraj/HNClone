@@ -45,39 +45,6 @@ app.get('/', (req, res) => {
     res.redirect('/posts');
 });
 
-// For handling the comments
-app.post('/posts/:post_id/comments/new', async function (req, res) {
-    console.log('Request to add new comment.');
-    console.log(req.body);
-    // user: commentuser
-    // Get the user from the User model
-    var author = await db.User.findOne({ username: 'commentuser' }).exec();
-
-    // Create a new comment and save it to DB
-    var newComment = new db.Comment({
-        text: req.body.comment,
-        author: author._id,
-        post: req.params.post_id
-    });
-    newComment.save();
-
-    // Update User
-    author = await db.User.findOneAndUpdate(
-        { username: 'commentuser' },
-        { $push: { comments: newComment } },
-    );
-    console.log(author);
-
-    // Update Post
-    var post = await db.Post.findOneAndUpdate(
-        { _id: req.params.post_id },
-        { $push: { comments: newComment } },
-    );
-    console.log(post);
-
-    res.send({ "message": "Comment added successfully" });
-});
-
 // TEST LOGIN //
 
 app.get('/test/view', requireLogin, async (req, res) => {
@@ -85,6 +52,15 @@ app.get('/test/view', requireLogin, async (req, res) => {
     console.log("req.sessionID: " + req.sessionID);
     console.log("req.user: " + JSON.stringify(req.user));
     console.log("req.user.username: " + req.user.username);
+    res.render('testView');
+});
+
+app.post('/test/comment', requireLogin, async (req, res) => {
+    // 
+    console.log("req.sessionID: " + req.sessionID);
+    console.log("req.body.post_id: " + req.body.post_id);
+    console.log("req.body.comment: " + req.body.commentText);
+
     res.render('testView');
 });
 

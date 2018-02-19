@@ -48,6 +48,7 @@ router.get('/posts/:post_id', async (req, res) => {
     });
 });
 
+// Routes for creating a new post/submission
 router.get('/submit', requireLogin, function (req, res) {
     res.render('posts/submit', {
         username: req.params.username,
@@ -61,8 +62,6 @@ router.post('/submit', requireLogin, async function (req, res) {
     // Get the "logged in" user from the User model
     var author = await db.User.findOne({ username: req.user.username }).exec();
     let authorID = author._id;
-    console.log(author);
-    console.log(authorID);
 
     // Create the new Post
     var newPost = new db.Post({
@@ -79,12 +78,39 @@ router.post('/submit', requireLogin, async function (req, res) {
         { username: req.user.username },
         { $push: { posts: newPost } },
     );
-    console.log(author);
+    // console.log(author);
 
     res.redirect('/posts/' + newPost._id);
 });
 
+// Route for adding comments
+router.post('/comment', requireLogin, async function (req, res) {
+    // Get the user from the User model
+    var author = await db.User.findOne({ username: req.user.username }).exec();
 
+    // Create a new comment and save it to DB
+    var newComment = new db.Comment({
+        text: req.body.commentText,
+        author: author._id,
+        post: req.body.post_id
+    });
+    newComment.save();
 
+    // Update User
+    author = await db.User.findOneAndUpdate(
+        { username: req.user.username },
+        { $push: { comments: newComment } },
+    );
+    console.log(author);
+
+    // Update Post
+    var post = await db.Post.findOneAndUpdate(
+        { _id: req.body.post_id },
+        { $push: { comments: newComment } },
+    );
+    console.log(post);
+
+    res.redirect('/posts/' + req.body.post_id);
+});
 
 module.exports = router;
