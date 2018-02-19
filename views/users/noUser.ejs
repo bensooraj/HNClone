@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="/style.css">
+    <title><%= username %>, doesn't exist</title>
+</head>
+
+<body>
+    <%- include('../header') -%>
+    <p>
+        <h2>
+            Errr! Who is
+            <%= username %>???
+        </h2>
+        They are probably not here yet!
+    </p>
+    <p>
+        It's okay, get back to <strong><a href="/">all posts</a></strong>!
+    </p>
+</body>
+
+</html>

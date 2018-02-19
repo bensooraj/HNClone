@@ -15,31 +15,12 @@
     user: <h3 class="inline"><%= userProfile.username %></h3>
     <strong>
         <nav class="TabMenu">
-            |&nbsp;<a class="m-active" href="/user/<%= userProfile.username %>">Overview</a>&nbsp;
+            |&nbsp;<a class="" href="/user/<%= userProfile.username %>">Overview</a>&nbsp;
             |&nbsp;<a class="" href="/user/<%= userProfile.username %>/posts/">Posts</a>&nbsp;
-            |&nbsp;<a class="" href="/user/<%= userProfile.username %>/comments/">Comments</a>&nbsp;
+            |&nbsp;<a class="m-active" href="/user/<%= userProfile.username %>/comments/">Comments</a>&nbsp;
         </nav>
     </strong>
     <hr>
-    
-    <section class="posts-section">
-        <h4 class="title">Posts</h4>
-        <ul class="posts-list">
-            <% if (userProfile.posts.length == 0) {%>
-                <p>The user hasn't submitted any posts yet.</p>
-            <%}%>
-            <% for(var i=0; i<userProfile.posts.length; i++) {%>
-                <li class="posts">
-                    <h4> <a href="/posts/<%= userProfile.posts[i]._id %>">
-                        <%= userProfile.posts[i].title %>
-                    </a></h4>
-                    <p>
-                        <%= userProfile.posts[i].text %>
-                    </p>
-                </li>
-            <% } %>
-        </ul>
-    </section>
     
     <section class="comments-section">
         <h4 class="title">Comments</h4>

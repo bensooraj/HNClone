@@ -1,27 +1,24 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" href="/style.css">
-    <title>User: <%= userProfile.username %> </title>
+    <title>User: <%= userProfile.username %></title>
 </head>
-
 <body>
     <%- include('../header') -%>
     <br>
     user: <h3 class="inline"><%= userProfile.username %></h3>
     <strong>
         <nav class="TabMenu">
-            |&nbsp;<a class="m-active" href="/user/<%= userProfile.username %>">Overview</a>&nbsp;
-            |&nbsp;<a class="" href="/user/<%= userProfile.username %>/posts/">Posts</a>&nbsp;
+            |&nbsp;<a class="" href="/user/<%= userProfile.username %>">Overview</a>&nbsp;
+            |&nbsp;<a class="m-active" href="/user/<%= userProfile.username %>/posts/">Posts</a>&nbsp;
             |&nbsp;<a class="" href="/user/<%= userProfile.username %>/comments/">Comments</a>&nbsp;
         </nav>
     </strong>
     <hr>
-    
     <section class="posts-section">
         <h4 class="title">Posts</h4>
         <ul class="posts-list">
@@ -40,29 +37,5 @@
             <% } %>
         </ul>
     </section>
-    
-    <section class="comments-section">
-        <h4 class="title">Comments</h4>
-        <ul class="comments-list">
-            <% if (userProfile.comments.length == 0) {%>
-                <p>The user hasn't commented on any posts yet.</p>
-            <%}%>
-            <% for(var i=0; i<userProfile.comments.length; i++) {%>
-                <li class="comments">
-                    <p>
-                        [<strong>
-                            <a href="/posts/<%= userProfile.comments[i].post %>">
-                                post
-                            </a>
-                        </strong>]
-                        <%= userProfile.comments[i].text %>
-                    </p>
-                </li>
-            <% } %>
-        </ul>
-    </section>
-    <!-- <%- userProfile %> -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 </body>
-
 </html>

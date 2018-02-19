@@ -4,10 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="/style.css">
     <title>All posts</title>
 </head>
 <body>
+    <%- include('../header') -%>
     <h3>All posts:</h3>
+    <hr>
     <ul class="posts">
         <% for(var i=0; i<posts.length; i++) {%>
             <li class="posts">
@@ -16,7 +19,7 @@
                 </a></h4>
                 <strong>created at </strong><%= posts[i].createdAt %>
                 <strong>by </strong> 
-                <a href="/users/<%= posts[i].author.username %>"><%= posts[i].author.username %></a>
+                <a href="/user/<%= posts[i].author.username %>"><%= posts[i].author.username %></a>
             </li>
         <% } %>
     </ul>

@@ -15,7 +15,6 @@ var postSchema = new mongoose.Schema({
         required: [true, "a post must be associated with one user!"]
     },
     // points: Number,
-    timestamp: Date,
     comments: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Comment'

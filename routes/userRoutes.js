@@ -6,43 +6,58 @@ var postRoutes = require('./postRoutes');
 
 // Middlewares
 router.use(bodyParser.urlencoded({ extended: true }));
-router.use('/:username/posts', postRoutes);
+// router.use('/:username/posts', postRoutes);
 
 // Routes
-router.get('/', function (req, res) {
-    db.User.find({})
-        .then(function (users) {
-            res.render('users/users', { users });
-        }, function (err) {
-            res.send("ERROR: " + err + ", listing users @ " + req.url);
+// Overview | User's page
+router.get('/:username', async function (req, res) {
+    var userProfile = await db.User
+        .findOne({ username: req.params.username })
+        .populate('posts')
+        .populate('comments')
+        .exec();
+
+    if (!userProfile) {
+        res.render('users/noUser', {
+            username: req.params.username
         });
+    } else {
+        res.render('users/user', { userProfile });
+    }
 });
 
-router.post('/', function (req, res) {
-    console.log('POST data:');
-    console.log(req.body);
+// Posts | User's page
+router.get('/:username/posts', async function (req, res) {
+    var userProfile = await db.User
+        .findOne({ username: req.params.username })
+        .populate('posts')
+        // .populate('comments')
+        .exec();
 
-    db.User.create(req.body)
-        .then(function () {
-            res.redirect('/')
-        }, function (err) {
-            res.send("ERROR: " + err + ", listing users @ " + req.url);
-        })
+    if (!userProfile) {
+        res.render('users/noUser', {
+            username: req.params.username
+        });
+    } else {
+        res.render('users/posts', { userProfile });
+    }
 });
 
-router.get('/:username', function (req, res) {
-    db.User.find({username: req.params.username})
-        .then(function (user) {
-            console.log(user[0]);
-            if (!user[0]) {
-                console.log('The user you are looking for, doesn\'t exist!');
-                res.send('The user you are looking for, doesn\'t exist!');
-            } else {
-                res.render('users/user', { user });   
-            }
-        }, function (err) {
-            res.send("ERROR: " + err + ", listing users @ " + req.url);
+// Comments | User's page
+router.get('/:username/comments', async function (req, res) {
+    var userProfile = await db.User
+        .findOne({ username: req.params.username })
+        // .populate('posts')
+        .populate('comments')
+        .exec();
+
+    if (!userProfile) {
+        res.render('users/noUser', {
+            username: req.params.username
         });
+    } else {
+        res.render('users/comments', { userProfile });
+    }
 });
 
 module.exports = router;

@@ -4,19 +4,20 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="/style.css">
     <title><%= post[0].title %></title>
 </head>
 <body>
-    <a href="/posts">Go back to all posts</a>
+    <%- include('../header') -%>
     <h2><%= post[0].title %></h2>
     <div><%= post[0].text %></div>
     <p>
         by <a href="/users/<%= post[0].author.username %>"><%= post[0].author.username %></a>
         at <%= post[0].createdAt %>
     </p>
-    <form action="/posts/<%= post[0]._id %>/comments/new" method="post">
+    <form action="/comment" method="post">
         <input type="hidden" name="post_id" id="post_id" value="<%= post[0]._id %>">
-        <textarea name="postComment" id="postComment" cols="70" rows="5"></textarea>
+        <textarea name="commentText" id="commentText" cols="70" rows="5"></textarea>
         <br>
         <input type="submit" value="add comment" id="addComment">
     </form>

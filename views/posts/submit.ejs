@@ -5,12 +5,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title><%= username %>'s new post</title>
+    <link rel="stylesheet" href="/style.css">
+    <title><%= user.username %>'s new post</title>
 </head>
 
 <body>
-    <strong><%= username %></strong>'s new post:
-    <form action="/users/<%= username %>/posts/" method="post">
+    <%- include('../header') -%>
+    <h3>Submit a new post:</h3>
+    <hr>
+    <p>
+        Speak your mind. The key to a successful submission is interesting content and a descriptive title.
+    </p>
+    <form action="/submit" method="post">
         <textarea name="title" id="title" cols="70" rows="2" placeholder="Title"></textarea>
         <br>
         <textarea name="text" id="text" cols="70" rows="10" placeholder="Text"></textarea>

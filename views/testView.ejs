@@ -4,20 +4,21 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>posts</title>
+    <title>nothing</title>
 </head>
 <body>
-    <h3>test list posts:</h3>
-    <ul class="posts">
-        <% for(var i=0; i<posts.length; i++) {%>
-            <li class="posts">
-                <h4> <a href="/posts/<%= posts[i]._id %>">
-                    <%= posts[i].title %>
-                </a></h4>
-                <p>Post content:</p>
-                <p><%= posts[i] %></p>
-            </li>
-        <% } %>
-    </ul>
+    <h3>locals</h3>
+    
+    <% if (typeof user == 'object' && user) { %>
+        <form action="/logout" method="POST">
+            <button type="submit" style="background:none!important;border:none;color:red;">logout</button>
+        </form>
+        <%- user %>
+    <% } %>
+
+    <br>
+    <p>Locals:</p>
+    <%- JSON.stringify(locals) %>
+
 </body>
 </html>
