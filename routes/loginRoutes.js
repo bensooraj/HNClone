@@ -9,9 +9,9 @@ const bcrypt = require('bcrypt');
 // Sessions Storage
 var mongoose = require('mongoose');
 // Uncomment the following when running via mLAB
-// var connectURL = "mongodb://" + process.env.DB_USER + ":" + process.env.DB_PASS + "@ds237748.mlab.com:37748/ben-hackernews-clone";
+var connectURL = "mongodb://" + process.env.DB_USER + ":" + process.env.DB_PASS + "@ds237748.mlab.com:37748/ben-hackernews-clone";
 // Uncomment the following when running via localhost
-var connectURL = "mongodb://localhost:27017/hackernews";
+// var connectURL = "mongodb://localhost:27017/hackernews";
 mongoose.connect(connectURL);
 var dbSessions = mongoose.connection;
 dbSessions.once('open', function () {
