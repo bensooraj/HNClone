@@ -14,12 +14,25 @@ var postSchema = new mongoose.Schema({
         ref: 'User',
         required: [true, "a post must be associated with one user!"]
     },
-    // points: Number,
+    votesCount: {
+        type: Number,
+        default: 0
+    },
+    votes: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User'
+    }],
     comments: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Comment'
     }]
 }, { timestamps: true });
+
+// 
+postSchema.post('update', function () {
+    console.log('############################################ Updating vote count ############################################');
+    this.update({}, { $set: { votesCount: this.votes.length } });
+});
 
 var Post = mongoose.model('Post', postSchema);
 

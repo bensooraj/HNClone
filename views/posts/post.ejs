@@ -12,9 +12,22 @@
     <h2><%= post[0].title %></h2>
     <div><%= post[0].text %></div>
     <p>
+        <span id="voteCount">
+            <%- post[0].votes.length %>
+        </span> points,
         by <a href="/users/<%= post[0].author.username %>"><%= post[0].author.username %></a>
-        at <%= post[0].createdAt %>
+        at <%= post[0].createdAt %> | 
+        <% if(post[0].votes.indexOf(user._id) === -1) { %>
+            <form action="/vote" method="POST" id="voteForm">
+            <input type="submit" value="vote" id="vote" style="background:none!important;border:none;color:red;font-size:1em;">
+        <%} else {%>
+            <form action="/unvote" method="POST" id="voteForm">
+            <input type="submit" value="unvote" id="unvote" style="background:none!important;border:none;color:red;font-size:1em;">
+        <% } %>
+            <input type="hidden" name="post_id" id="post_id" value="<%= post[0]._id %>">
+        </form>
     </p>
+    
     <form action="/comment" method="post">
         <input type="hidden" name="post_id" id="post_id" value="<%= post[0]._id %>">
         <textarea name="commentText" id="commentText" cols="70" rows="5"></textarea>
@@ -37,6 +50,12 @@
             </div>
         <% } %>
     </div>
+    <%- post %>
+    <br>
+    <br>
+    <br>
+    <br>
+    <%- user %>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="/scripts.js"></script>
 </body>
