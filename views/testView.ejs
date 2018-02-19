@@ -8,6 +8,17 @@
 </head>
 <body>
     <h3>locals</h3>
-    <%- user %>
+    
+    <% if (typeof user == 'object' && user) { %>
+        <form action="/logout" method="POST">
+            <button type="submit" style="background:none!important;border:none;color:red;">logout</button>
+        </form>
+        <%- user %>
+    <% } %>
+
+    <br>
+    <p>Locals:</p>
+    <%- JSON.stringify(locals) %>
+
 </body>
 </html>

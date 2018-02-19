@@ -36,27 +36,26 @@ dbSessions.once('open', function () {
 //use sessions for tracking logins
 app.use(session({
     secret: '7}~49GCd/)iHMDWJHMIp9k+3J^J8t4B3Uu1g$EqIxo[A6:c|n*D{!Z=*!XnX',
-    resave: true,
+    resave: false,
     saveUninitialized: false,
     store: new MongoStore({
         mongooseConnection: dbSessions
-    })
+    }),
+    unset: 'destroy'
 }));
 app.use(async function (req, res, next) {
     // Check if session exists
     if (req.session && req.session.user) {
         // Lookup the user in the DB by pulling their username from the session
         var user = await db.User.findOne({ username: req.session.user.username });
+        console.log("user object: ");
+        console.log(user);
+        // set the password to null
+        user.password = null;
         if (user) {
             req.user = user;
-            // delete the password from the session
-            delete req.user.password;
-            //refresh the session value
             req.session.user = user;
-            delete req.session.password;
-            // expose the user to the template
             res.locals.user = user;
-            delete res.locals.password;
 
             // Remove ======================
             console.log('res.locals: ');
@@ -191,9 +190,15 @@ app.post('/signup', async (req, res) => {
     }
 });
 
-app.get('/login', function (req, res) {
-    var error;
-    res.render('users/login', { error });
+app.get('/login', async function (req, res) {
+    var user = await db.User.findOne({ username: req.body.username });
+    if (req.user) {
+        // console.log(req.user);
+        res.redirect('/');
+    } else {
+        var error;
+        res.render('users/login', { error });
+    }
 });
 
 app.post('/login', async function (req, res) {
@@ -206,6 +211,8 @@ app.post('/login', async function (req, res) {
         res.render('users/login', { error });
     } else {
         if (bcrypt.compareSync(req.body.password, user.password)) {
+            // set the password to null
+            user.password = null;
             // Store the user in the session:
             req.session.user = user;
             res.redirect('/');
@@ -217,12 +224,39 @@ app.post('/login', async function (req, res) {
     }
 });
 
+app.post('/logout', async function (req, res) {
+    // https://github.com/jdesboeufs/connect-mongo/issues/140#issuecomment-68108810
+    // Delete the session
+    // One of the following two lines of code should be working, 
+    // but they are not, and not terminating the user session
+    // req.session = null;
+    // req.session.destroy();
+
+    // So, I eplicitly delete the cookie from the user's browser
+    res.clearCookie('connect.sid');
+    // And remove the session stored in the 'sessions' collection
+    // so I don't pile up useless sessions
+    var sessionCollection = await mongoose.connection.db.collection("sessions");
+    await sessionCollection.findOneAndDelete({ _id: req.sessionID });
+    // Redirect the user to the homepage
+    res.redirect('/');
+});
+
 // TEST LOGIN //
 
-app.get('/test/view', async (req, res) => {
+app.get('/test/view', requireLogin, async (req, res) => {
     // 
+    console.log("req.sessionID: " + req.sessionID);
+    var sessionCollection = await mongoose.connection.db.collection("sessions");
+    var sess_ID = await sessionCollection.findOne({ _id: req.sessionID });
+
+    console.log("sess_ID: " + JSON.stringify(sess_ID));
     res.render('testView');
 });
 
 
 app.listen(port, () => console.log('Example app listening on port 3000!'))
+
+
+// useful piece of code:
+// if (typeof data === 'object' && data !== null)
