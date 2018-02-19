@@ -34,45 +34,15 @@ function requireLogin(req, res, next) {
 
 // Get all the routes
 var userRoutes = require('./routes/userRoutes');
+var postRoutes = require('./routes/postRoutes');
 
 // Assign the above routes to route paths
 app.use('/user', userRoutes);
+app.use('/', postRoutes);
 
 // Root path redirect
 app.get('/', (req, res) => {
     res.redirect('/posts');
-});
-
-// All posts
-app.get('/posts', async (req, res) => {
-    var posts = await db.Post.find({})
-        .populate('author')
-        .exec();
-
-    res.render('posts/posts', {
-        posts: posts
-    });
-});
-
-// 
-app.get('/posts/:post_id', async (req, res) => {
-    var post = await db.Post.find({ _id: req.params.post_id })
-        .populate('author')
-        .populate({
-            path: 'comments',
-            // Populate author details inside the comment
-            populate: { path: 'author' },
-            // Sort the comments, to display comments in
-            // chronological order
-            options: {
-                sort: { 'createdAt': 1 }
-            }
-        })
-        .exec();
-
-    res.render('posts/post', {
-        post: post
-    });
 });
 
 // For handling the comments
