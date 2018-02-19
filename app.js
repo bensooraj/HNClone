@@ -4,9 +4,6 @@ require('dotenv').config()
 var bodyParser = require("body-parser");
 var db = require("./models");
 const port = Number(process.env.PORT || 3000);
-// var session = require('express-session');
-// var MongoStore = require('connect-mongo')(session);
-// var bcrypt = require('bcrypt');
 
 // Middlewares
 app.use(bodyParser.urlencoded({ extended: true }));
