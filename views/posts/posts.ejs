@@ -17,6 +17,9 @@
                 <h4> <a href="/posts/<%= posts[i]._id %>">
                     <%= posts[i].title %>
                 </a></h4>
+                <span id="voteCount">
+                    <%- posts[i].votes.length %>
+                </span> points,
                 <strong>created at </strong><%= posts[i].createdAt %>
                 <strong>by </strong> 
                 <a href="/user/<%= posts[i].author.username %>"><%= posts[i].author.username %></a>

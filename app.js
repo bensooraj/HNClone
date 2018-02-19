@@ -32,34 +32,23 @@ function requireLogin(req, res, next) {
 // Get all the routes
 var userRoutes = require('./routes/userRoutes');
 var postRoutes = require('./routes/postRoutes');
+var voteRoutes = require('./routes/voteRoutes');
 
 // Assign the above routes to route paths
 app.use('/user', userRoutes);
 app.use('/', postRoutes);
+app.use('/', voteRoutes);
 
 // Root path redirect
 app.get('/', (req, res) => {
     res.redirect('/posts');
 });
 
-// TEST LOGIN //
 
-app.get('/test/view', requireLogin, async (req, res) => {
-    // 
-    console.log("req.sessionID: " + req.sessionID);
-    console.log("req.user: " + JSON.stringify(req.user));
-    console.log("req.user.username: " + req.user.username);
-    res.render('testView');
-});
-
-app.post('/test/comment', requireLogin, async (req, res) => {
-    // 
-    console.log("req.sessionID: " + req.sessionID);
-    console.log("req.body.post_id: " + req.body.post_id);
-    console.log("req.body.comment: " + req.body.commentText);
-
-    res.render('testView');
-});
+// TEST ROUTES //
+// app.post('/test/vote', requireLogin, async (req, res) => {
+//     
+// });
 
 
 app.listen(port, () => console.log('Example app listening on port 3000!'))
