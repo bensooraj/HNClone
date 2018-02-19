@@ -5,34 +5,39 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>
-        <%= username %>, doesn't exist</title>
+    <link rel="stylesheet" href="/style.css">
+    <title><%= username %>, doesn't exist</title>
 </head>
 
 <body>
     <header>
-        <nav class="nav-bar">
+        <nav id="nav-bar">
             <strong>
                 | <a href="/">&nbsp;ALL POSTS&nbsp;</a>
                 | <a href="/submit">&nbsp;SUBMIT POST&nbsp;</a>
                 |
             </strong>
         </nav>
-        <br>
-        <br>
+        <!-- <br>
+        <br> -->
         <div id="header-bottom-right">
             <% if (typeof user == 'object' && user) { %>
                 <form action="/logout" method="POST">
-                    <button type="submit" style="background:none!important;border:none;color:red;">logout</button>
+                    <strong>
+                    |&nbsp;<a href="/user/<%= user.username %>" class="login-link" style="font-size:1.1em;"><b><%= user.username %></b></a>&nbsp;
+                    |&nbsp;<button type="submit" class="login-link" style="background:none!important;border:none;color:red;font-size:1em;"><b>logout</b></button>&nbsp;
+                    |&nbsp;
+                    </strong>
                 </form>
-                <%- user %>
+                <!-- <%- user %> -->
             <% } else { %>
                 <span class="user">Want to join?
-                    <a href="/login" class="login-required login-link">Log In</a> or
-                    <a href="/signup" class="login-required">Sign Up</a> in seconds.
+                    <a href="/login" class="login-link" style="color:red;font-size:1.1em;"><b>Log In</b></a> or
+                    <a href="/signup" class="login-link" style="color:red;font-size:1.1em;"><b>Sign Up</b></a> in seconds.
                 </span>
             <% } %>
         </div>
+        <div class="clear-float"></div>
     </header>
     <p>
         <h2>
