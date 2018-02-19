@@ -43,4 +43,21 @@ router.get('/:username/posts', async function (req, res) {
     }
 });
 
+// Comments | User's page
+router.get('/:username/comments', async function (req, res) {
+    var userProfile = await db.User
+        .findOne({ username: req.params.username })
+        // .populate('posts')
+        .populate('comments')
+        .exec();
+
+    if (!userProfile) {
+        res.render('users/noUser', {
+            username: req.params.username
+        });
+    } else {
+        res.render('users/comments', { userProfile });
+    }
+});
+
 module.exports = router;
