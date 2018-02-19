@@ -54,12 +54,12 @@ router.get('/submit', requireLogin, function (req, res) {
     });
 });
 
-router.post('/', async function (req, res) {
+router.post('/submit', requireLogin, async function (req, res) {
     console.log('title: ' + req.body.title);
     console.log('text:  ' + req.body.text);
 
-    // Get the user from the User model
-    var author = await db.User.findOne({ username: req.params.username }).exec();
+    // Get the "logged in" user from the User model
+    var author = await db.User.findOne({ username: req.user.username }).exec();
     let authorID = author._id;
     console.log(author);
     console.log(authorID);
@@ -69,7 +69,6 @@ router.post('/', async function (req, res) {
         title: req.body.title,
         text: req.body.text,
         author: authorID,
-        timestamp: new Date(),
     });
     // Save the post to the DB
     newPost.save();
@@ -77,12 +76,12 @@ router.post('/', async function (req, res) {
     console.log(newPost);
     // Save the newly created post to the user
     author = await db.User.findOneAndUpdate(
-        { username: req.params.username },
+        { username: req.user.username },
         { $push: { posts: newPost } },
     );
     console.log(author);
 
-    res.redirect('/users/' + req.params.username + '/posts');
+    res.redirect('/posts/' + newPost._id);
 });
 
 

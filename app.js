@@ -83,10 +83,8 @@ app.post('/posts/:post_id/comments/new', async function (req, res) {
 app.get('/test/view', requireLogin, async (req, res) => {
     // 
     console.log("req.sessionID: " + req.sessionID);
-    // var sessionCollection = await mongoose.connection.db.collection("sessions");
-    // var sess_ID = await sessionCollection.findOne({ _id: req.sessionID });
-
-    // console.log("sess_ID: " + JSON.stringify(sess_ID));
+    console.log("req.user: " + JSON.stringify(req.user));
+    console.log("req.user.username: " + req.user.username);
     res.render('testView');
 });
 
