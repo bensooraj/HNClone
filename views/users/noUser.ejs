@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>
+        <%= username %>, doesn't exist</title>
+</head>
+
+<body>
+    <header>
+        <nav class="nav-bar">
+            <strong>
+                | <a href="/">&nbsp;ALL POSTS&nbsp;</a>
+                | <a href="/submit">&nbsp;SUBMIT POST&nbsp;</a>
+                |
+            </strong>
+        </nav>
+        <br>
+        <br>
+        <div id="header-bottom-right">
+            <% if (typeof user == 'object' && user) { %>
+                <form action="/logout" method="POST">
+                    <button type="submit" style="background:none!important;border:none;color:red;">logout</button>
+                </form>
+                <%- user %>
+            <% } else { %>
+                <span class="user">Want to join?
+                    <a href="/login" class="login-required login-link">Log In</a> or
+                    <a href="/signup" class="login-required">Sign Up</a> in seconds.
+                </span>
+            <% } %>
+        </div>
+    </header>
+    <p>
+        <h2>
+            Errr! Who is
+            <%= username %>???
+        </h2>
+        They are probably not here yet!
+    </p>
+    <p>
+        It's okay, get back to <strong><a href="/">all posts</a></strong>!
+    </p>
+</body>
+
+</html>

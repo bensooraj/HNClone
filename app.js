@@ -36,7 +36,7 @@ function requireLogin(req, res, next) {
 var userRoutes = require('./routes/userRoutes');
 
 // Assign the above routes to route paths
-app.use('/users', userRoutes);
+app.use('/user', userRoutes);
 
 // Root path redirect
 app.get('/', (req, res) => {

@@ -9,7 +9,7 @@ router.use(bodyParser.urlencoded({ extended: true }));
 router.get('/', async function (req, res) {
     var author = await db.User.findOne({ username: req.params.username })
                               .populate('posts').exec();
-    console.log(author);
+    // console.log(author);
 
     res.render('users/posts/posts', {
         username: req.params.username,
