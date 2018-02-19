@@ -9,3 +9,11 @@
 .clear-float {
     clear: both;
 }
+
+.inline, nav.TabMenu {
+    display: inline;
+}
+
+h4.title {
+    text-decoration: overline;
+}
